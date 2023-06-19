@@ -1,0 +1,78 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class="no-js">
+<!--<![endif]-->
+	<head>
+		
+		<!-- Basic page needs ================================================== -->
+		<meta charset="utf-8">
+		<!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+		{% if settings.favicon_enable %}
+		<link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/png" />
+		{% endif %}
+		<!-- Title and description ================================================== -->
+		<title>
+			{{ page_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash;
+			{{ 'general.meta.tags' | t: tags: meta_tags }}{% endif %}{% if current_page != 1 %} &ndash;
+			{{ 'general.meta.page' | t: page: current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash;
+			{{ shop.name }}{% endunless %}
+		</title>
+		{% if page_description %}
+		<meta name="description" content="{{ page_description | escape }}">
+      	<meta name="facebook-domain-verification" content="qn2zcv13w8o0xhcs92wvpzff3fb00o" />
+		{% endif %}
+		<!-- Social meta ================================================== -->
+		{% include 'social-meta-tags' %}
+		<!-- Helpers ================================================== -->
+		<link rel="canonical" href="{{ canonical_url }}">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta name="theme-color" content="{{ settings.color_primary }}">
+
+        <!-- Nuevos estilos Arnaldo -->
+        <script type="text/javascript" async="" src="https://cdn-bundler.nice-team.net/app/js/bundler.js?shop={{ shop.permanent_domain }}"></script>
+        {% render 'treedify' %}{{ content_for_header }} 
+      	{{ 'flickity.css' | asset_url | stylesheet_tag }}
+        {{ 'estilos.css' | asset_url | stylesheet_tag }}
+        {{ 'responsive.css' | asset_url | stylesheet_tag }}
+        {{ 'go-cart.css' | asset_url | stylesheet_tag }}
+        {{ 'gocart.js' | asset_url | script_tag }}
+      	<script src="{{ 'Wishlist.js' | asset_url }}" defer="defer"></script>
+        <script src="//code.jquery.com/jquery-3.2.1.min.js"></script>  
+      	{{ '//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css' | stylesheet_tag }}
+        {{ '//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css' | stylesheet_tag }}
+        {{ 'quickview.scss.css' | asset_url | stylesheet_tag }}
+        {{ '//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js' | script_tag }}
+        
+      	{{ 'lazyload.js' | asset_url | script_tag }}
+      	{{ 'flickity.pkgd.min.js' | asset_url | script_tag }}
+      
+
+          {{ 'quickview.js' | asset_url | script_tag }}
+          <script>
+            {% capture content %}{% include 'quickview' %}{% endcapture %}
+            var content = {{ content | json }};
+          </script>
+
+      	{% if template contains 'product' %}
+      	  {{ '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' | script_tag }}
+      	  {{ 'jquery.zoom.min.js' | asset_url | script_tag }}
+      	  <script>
+              $(document).ready(function(){
+                  $('#ex1').zoom();
+              });
+          </script>
+        {% endif %}
+</head>
+	
+	<body id="{{ page_title | handle }}"
+	class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} {% unless tempate contains 'index' %} others {% endunless %} {% if productType != '' %}{{ productType }}{% endif %}">
+		<main id="main" role="main" style="padding-bottom:1rem;">
+      		{{ content_for_layout }}{% render 'treedify_script' %}
+	<noscript class="endOfLayoutContentX" type="text/mark"></noscript>
+    	</main>
+</body>
+</html>
